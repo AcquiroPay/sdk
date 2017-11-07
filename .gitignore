@@ -1,0 +1,13 @@
+/node_modules
+/public/storage
+/public/hot
+/storage/*.key
+/vendor
+/tests/Coverage
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+_ide_helper.php
+.phpstorm.meta.php
+composer.lock

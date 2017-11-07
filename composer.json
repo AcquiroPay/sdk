@@ -1,0 +1,38 @@
+{
+  "name": "acquiropay/sdk",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.1",
+    "guzzlehttp/guzzle": "^6.2",
+    "tightenco/collect": "^5.4"
+  },
+  "require-dev": {
+    "fzaninotto/faker": "^1.6",
+    "illuminate/cache": "^5.5",
+    "larapack/dd": "^1.1",
+    "mockery/mockery": "~1.0",
+    "phpunit/phpunit": "^6.0",
+    "sllh/php-cs-fixer-styleci-bridge": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "AcquiroPay\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit --stop-on-failure tests/",
+    "cs": "php-cs-fixer fix --allow-risky=yes"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
