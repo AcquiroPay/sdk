@@ -70,7 +70,13 @@ class Api
 
         $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
 
-        return json_decode((string) $response->getBody());
+        $json = json_decode((string) $response->getBody());
+
+        if(json_last_error() === JSON_ERROR_NONE) {
+            return $json;
+        }
+
+        return (string) $response->getBody();
     }
 
     public function authorize(string $token, string $service, string $method, string $endpoint): bool
