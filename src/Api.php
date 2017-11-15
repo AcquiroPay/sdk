@@ -72,7 +72,7 @@ class Api
 
         $json = json_decode((string) $response->getBody());
 
-        if(json_last_error() === JSON_ERROR_NONE) {
+        if (json_last_error() === JSON_ERROR_NONE) {
             return $json;
         }
 
