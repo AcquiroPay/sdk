@@ -7,21 +7,24 @@ namespace AcquiroPay;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
 
 class Api
 {
     protected $cache;
     protected $http;
+    protected $logger;
 
     protected $url;
     protected $username;
     protected $password;
 
-    public function __construct(Cache $cache, Client $http)
+    public function __construct(Cache $cache, Client $http, LoggerInterface $logger = null)
     {
         $this->cache = $cache;
         $this->http = $http;
+        $this->logger = $logger;
     }
 
     public function setUrl(string $url): self
@@ -92,6 +95,10 @@ class Api
 
             return true;
         } catch (Exception $exception) {
+            if ($this->logger) {
+                $this->logger->error($exception);
+            }
+
             return false;
         }
     }
