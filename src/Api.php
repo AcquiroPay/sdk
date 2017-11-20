@@ -105,7 +105,7 @@ class Api
 
     protected function token(): ?string
     {
-        return $this->cache->remember('api_token_'.md5($this->url), 10, function () {
+        return $this->cache->remember('acquiropay_api_token_'.md5($this->url), 10, function () {
             $response = $this->http->post($this->url.'/login', ['form_params' => ['username' => $this->username, 'password' => $this->password]]);
 
             return (string) $response->getBody();
