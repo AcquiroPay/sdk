@@ -34,4 +34,9 @@ final class Consumer
 
         return self::$instance;
     }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
 }
