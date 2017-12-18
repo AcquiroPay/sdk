@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
+use AcquiroPay\Exceptions\UnauthorizedException;
 
 class Api
 {
@@ -82,7 +83,19 @@ class Api
         return (string) $response->getBody();
     }
 
-    public function authorize(string $token, string $service, string $method, string $endpoint): ?string
+    /**
+     * Authorize token for performing request.
+     *
+     * @param string $token
+     * @param string $service
+     * @param string $method
+     * @param string $endpoint
+     *
+     * @return Consumer
+     *
+     * @throws UnauthorizedException
+     */
+    public function authorize(string $token, string $service, string $method, string $endpoint): Consumer
     {
         try {
             $headers = ['Content-Type' => 'application/json'];
@@ -93,13 +106,19 @@ class Api
 
             $response = $this->http->send(new Request('POST', $url, $headers, $body));
 
-            return (string) $response->getBody();
+            $json = \GuzzleHttp\json_decode((string) $response->getBody());
+
+            if (!isset($json->authorized, $json->consumer_id) || $json->authorized !== true) {
+                throw new UnauthorizedException;
+            }
+
+            return Consumer::create($json->consumer_id);
         } catch (Exception $exception) {
             if ($this->logger) {
                 $this->logger->error($exception);
             }
 
-            return null;
+            throw new UnauthorizedException('', 0, $exception);
         }
     }
 

@@ -28,7 +28,7 @@ final class Consumer
 
     public static function instance(): self
     {
-        if(self::$instance === null) {
+        if (self::$instance === null) {
             throw new RuntimeException('No instance.');
         }
 
