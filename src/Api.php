@@ -82,7 +82,7 @@ class Api
         return (string) $response->getBody();
     }
 
-    public function authorize(string $token, string $service, string $method, string $endpoint): bool
+    public function authorize(string $token, string $service, string $method, string $endpoint): ?string
     {
         try {
             $headers = ['Content-Type' => 'application/json'];
@@ -91,15 +91,15 @@ class Api
 
             $body = json_encode(compact('token', 'service', 'method', 'endpoint'));
 
-            $this->http->send(new Request('POST', $url, $headers, $body));
+            $response = $this->http->send(new Request('POST', $url, $headers, $body));
 
-            return true;
+            return (string) $response->getBody();
         } catch (Exception $exception) {
             if ($this->logger) {
                 $this->logger->error($exception);
             }
 
-            return false;
+            return null;
         }
     }
 
