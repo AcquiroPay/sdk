@@ -7,6 +7,7 @@ namespace AcquiroPay;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
 use AcquiroPay\Exceptions\UnauthorizedException;
@@ -28,21 +29,21 @@ class Api
         $this->logger = $logger;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(string $url): Api
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(string $username): Api
     {
         $this->username = $username;
 
         return $this;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): Api
     {
         $this->password = $password;
 
@@ -56,8 +57,23 @@ class Api
 
     public function call(string $method, string $endpoint, array $headers = [], array $parameters = null)
     {
-        $body = null;
+        $stream = $this->makeCallRequest($method, $endpoint, $headers, $parameters);
+        $json = json_decode((string) $stream);
 
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return $json;
+        }
+
+        return (string) $stream;
+    }
+
+    protected function makeCallRequest(
+        string $method,
+        string $endpoint,
+        array $headers = [],
+        array $parameters = null
+    ): StreamInterface
+    {
         $headers = array_merge([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
@@ -68,19 +84,11 @@ class Api
             $endpoint = $this->url.'/'.ltrim($endpoint, '/');
         }
 
-        if ($parameters !== null) {
-            $body = json_encode($parameters);
-        }
+        $body = $parameters !== null ? json_encode($parameters) : null;
 
         $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
 
-        $json = json_decode((string) $response->getBody());
-
-        if (json_last_error() === JSON_ERROR_NONE) {
-            return $json;
-        }
-
-        return (string) $response->getBody();
+        return $response->getBody();
     }
 
     /**
