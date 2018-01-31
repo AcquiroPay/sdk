@@ -10,7 +10,7 @@ use Illuminate\Cache\Repository;
 
 class LaravelCache implements Cache
 {
-    private $repository;
+    protected $repository;
 
     public function __construct(Repository $repository)
     {
