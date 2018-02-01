@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AcquiroPay;
 
+use AcquiroPay\Exceptions\NotFoundException;
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
@@ -72,8 +74,7 @@ class Api
         string $endpoint,
         array $headers = [],
         array $parameters = null
-    ): StreamInterface
-    {
+    ): StreamInterface {
         $headers = array_merge([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
@@ -86,9 +87,15 @@ class Api
 
         $body = $parameters !== null ? json_encode($parameters) : null;
 
-        $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
+        try {
+            $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
+        } catch (ClientException $exception) {
+            $response = $exception->getResponse();
+            if ($response->getStatusCode() === 404) {
+                throw new NotFoundException;
+            }
+        }
 
-        // todo throw exceptions according to statusCode()?
         return $response->getBody();
     }
 

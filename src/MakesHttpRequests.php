@@ -26,7 +26,7 @@ trait MakesHttpRequests
             // todo throw error?
             return [];
         }
-        // todo ClientException should be caught for 404 response
+
         return $data;
     }
 

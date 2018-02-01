@@ -8,7 +8,7 @@ use AcquiroPay\Paymarket\Resources\Transaction;
 
 trait ManagesTransactions
 {
-    public function getTransactions(): array // todo
+    public function getTransactions(): array
     {
         return $this->transformCollection(
             array_get($this->get('transactions'), 'data'),
