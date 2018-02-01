@@ -27,6 +27,9 @@ class Service extends AbstractResource
     /** @var  int */
     public $isActive;
 
+    /** @var  int */
+    public $isActiveForMerchant;
+
     /** @var string */
     public $createdAt;
 
@@ -36,6 +39,8 @@ class Service extends AbstractResource
     public function __construct(array $attributes)
     {
         parent::__construct($attributes);
+
+        $this->isActiveForMerchant = array_get($attributes, 'pivot.is_active');
 
         $this->parameters = array_map(function (array $parameterAttributes) {
             return new ServiceParameter($parameterAttributes);
