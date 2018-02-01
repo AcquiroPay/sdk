@@ -11,14 +11,14 @@ trait ManagesTransactions
     public function getTransactions(): array // todo
     {
         return $this->transformCollection(
-            $this->get('admin/transactions')['data'],
+            $this->get('transactions')['data'],
             Transaction::class
         );
     }
 
-    public function transaction(string $uuid): Transaction
+    public function getTransaction(string $uuid): Transaction
     {
-        return new Transaction($this->get('admin/transactions/' . $uuid)['data']);
+        return new Transaction($this->get('transactions/' . $uuid)['data']);
     }
 
     public function createTransaction(array $parameters): array
