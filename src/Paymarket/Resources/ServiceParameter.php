@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Paymarket\Resources;
 
-
 class ServiceParameter extends AbstractResource
 {
     /** @var int */

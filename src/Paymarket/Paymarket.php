@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AcquiroPay\Paymarket;
 
 use AcquiroPay\Api;
+use AcquiroPay\MakesHttpRequests;
 use AcquiroPay\Paymarket\Actions\ManagesServices;
 use AcquiroPay\Paymarket\Actions\ManagesTransactions;
 

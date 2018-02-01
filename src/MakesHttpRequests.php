@@ -1,8 +1,8 @@
 <?php
 
-namespace AcquiroPay\Paymarket;
+declare(strict_types=1);
 
-use AcquiroPay\Api;
+namespace AcquiroPay;
 
 trait MakesHttpRequests
 {
@@ -70,5 +70,4 @@ trait MakesHttpRequests
     {
         return $this->callService('DELETE', $uri, $parameters);
     }
-
 }

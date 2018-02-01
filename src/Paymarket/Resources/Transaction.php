@@ -64,5 +64,4 @@ class Transaction extends AbstractResource
     {
         return (bool)$this->transfer;
     }
-
 }
