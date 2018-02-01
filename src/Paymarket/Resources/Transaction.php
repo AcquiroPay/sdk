@@ -45,21 +45,24 @@ class Transaction extends AbstractResource
     /** @var string */
     public $updatedAt;
 
-    protected function fill(array $attributes): void
+    public function __construct(array $attributes)
     {
-        foreach ($attributes as $key => $value) {
+        parent::__construct($attributes);
 
-            if ($key === 'invoice' || $key === 'transfer') {
-                $this->{$key} = (array)$value;
-                continue;
-            }
+        $this->invoice = $attributes['invoice'] ? new Invoice($attributes['invoice']) : null;
+        $this->transfer = $attributes['transfer'] ? new Transfer($attributes['transfer']) : null;
 
-            $key = $this->camelCase($key);
+        // todo class for TransactionParameters or leave array
+    }
 
-            $this->{$key} = $value;
+    public function hasInvoice(): bool
+    {
+        return (bool)$this->invoice;
+    }
 
-        }
-
+    public function hasTransfer(): bool
+    {
+        return (bool)$this->transfer;
     }
 
 }

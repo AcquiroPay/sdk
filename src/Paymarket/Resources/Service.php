@@ -18,6 +18,9 @@ class Service extends AbstractResource
     /** @var  int */
     public $maxAmount;
 
+    /** @var ServiceParameter[] */
+    public $parameters;
+
     /** @var  string */
     public $className;
 
@@ -29,5 +32,14 @@ class Service extends AbstractResource
 
     /** @var string */
     public $updatedAt;
+
+    public function __construct(array $attributes)
+    {
+        parent::__construct($attributes);
+
+        $this->parameters = array_map(function (array $parameterAttributes) {
+            return new ServiceParameter($parameterAttributes);
+        }, $attributes['parameters'] ?? []);
+    }
 
 }

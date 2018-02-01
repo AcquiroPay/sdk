@@ -88,6 +88,7 @@ class Api
 
         $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
 
+        // todo throw exceptions according to statusCode()?
         return $response->getBody();
     }
 
