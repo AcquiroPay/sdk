@@ -8,7 +8,6 @@ use AcquiroPay\Paymarket\Resources\Service;
 
 trait ManagesServices
 {
-    // todo loads all services with parameters?
     public function getServices(): array
     {
         return $this->transformCollection(

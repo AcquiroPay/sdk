@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AcquiroPay;
 
+use AcquiroPay\Exceptions\ForbiddenException;
 use AcquiroPay\Exceptions\NotFoundException;
 use Exception;
 use GuzzleHttp\Client;
@@ -54,19 +55,19 @@ class Api
 
     public function callService(string $service, string $method, string $endpoint, array $parameters = null)
     {
-        return $this->call($method, '/services/'.$service, ['Endpoint' => $endpoint], $parameters);
+        return $this->call($method, '/services/' . $service, ['Endpoint' => $endpoint], $parameters);
     }
 
     public function call(string $method, string $endpoint, array $headers = [], array $parameters = null)
     {
         $stream = $this->makeCallRequest($method, $endpoint, $headers, $parameters);
-        $json = json_decode((string) $stream);
+        $json = json_decode((string)$stream);
 
         if (json_last_error() === JSON_ERROR_NONE) {
             return $json;
         }
 
-        return (string) $stream;
+        return (string)$stream;
     }
 
     protected function makeCallRequest(
@@ -78,11 +79,11 @@ class Api
         $headers = array_merge([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->token(),
+            'Authorization' => 'Bearer ' . $this->token(),
         ], $headers);
 
         if (!Str::startsWith($endpoint, ['http://', 'https://'])) {
-            $endpoint = $this->url.'/'.ltrim($endpoint, '/');
+            $endpoint = $this->url . '/' . ltrim($endpoint, '/');
         }
 
         $body = $parameters !== null ? json_encode($parameters) : null;
@@ -91,9 +92,18 @@ class Api
             $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
         } catch (ClientException $exception) {
             $response = $exception->getResponse();
-            if ($response->getStatusCode() === 404) {
-                throw new NotFoundException;
+
+            $statusCode = $response->getStatusCode() ?? null;
+
+            switch ($statusCode) {
+                case 404:
+                    throw new NotFoundException;
+                    break;
+                case 403:
+                    throw new ForbiddenException;
+                    break;
             }
+
         }
 
         return $response->getBody();
@@ -116,13 +126,13 @@ class Api
         try {
             $headers = ['Content-Type' => 'application/json'];
 
-            $url = $this->url.'/authorize';
+            $url = $this->url . '/authorize';
 
             $body = json_encode(compact('token', 'service', 'method', 'endpoint'));
 
             $response = $this->http->send(new Request('POST', $url, $headers, $body));
 
-            $json = \GuzzleHttp\json_decode((string) $response->getBody());
+            $json = \GuzzleHttp\json_decode((string)$response->getBody());
 
             if (!isset($json->authorized, $json->consumer_id) || $json->authorized !== true) {
                 throw new UnauthorizedException;
@@ -140,10 +150,11 @@ class Api
 
     protected function token(): ?string
     {
-        return $this->cache->remember('acquiropay_api_token_'.md5($this->url), 10, function () {
-            $response = $this->http->post($this->url.'/login', ['form_params' => ['username' => $this->username, 'password' => $this->password]]);
+        return $this->cache->remember('acquiropay_api_token_' . md5($this->url), 10, function () {
+            $response = $this->http->post($this->url . '/login',
+                ['form_params' => ['username' => $this->username, 'password' => $this->password]]);
 
-            return (string) $response->getBody();
+            return (string)$response->getBody();
         });
     }
 }
