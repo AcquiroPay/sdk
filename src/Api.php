@@ -97,7 +97,7 @@ class Api
 
             switch ($statusCode) {
                 case 404:
-                    throw new NotFoundException;
+                    throw new NotFoundException($response->getBody()->getContents());
                     break;
                 case 403:
                     throw new ForbiddenException;

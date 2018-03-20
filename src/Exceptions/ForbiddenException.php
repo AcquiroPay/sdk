@@ -8,8 +8,8 @@ use Exception;
 
 class ForbiddenException extends Exception
 {
-    public function __construct()
+    public function __construct(string $message = 'Seems like you don\'t have permission.')
     {
-        parent::__construct('Seems like you don\'t have permission.');
+        parent::__construct($message);
     }
 }
