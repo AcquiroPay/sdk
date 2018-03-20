@@ -93,9 +93,7 @@ class Api
         } catch (ClientException $exception) {
             $response = $exception->getResponse();
 
-            $statusCode = $response->getStatusCode() ?? null;
-
-            switch ($statusCode) {
+            switch ($response->getStatusCode()) {
                 case 404:
                     throw new NotFoundException($response->getBody()->getContents());
                     break;
