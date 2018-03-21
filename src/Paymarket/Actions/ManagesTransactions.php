@@ -19,7 +19,7 @@ trait ManagesTransactions
     public function getTransaction(string $uuid): Transaction
     {
         return new Transaction(
-            array_get($this->get('transactions/' . $uuid), 'data', [])
+            array_get($this->get('transactions/'.$uuid), 'data', [])
         );
     }
 
@@ -30,8 +30,6 @@ trait ManagesTransactions
 
     public function confirmTransaction(string $uuid, array $parameters): array
     {
-        return $this->post('transactions/' . $uuid . '/confirm', $parameters);
+        return $this->post('transactions/'.$uuid.'/confirm', $parameters);
     }
 }
-
-

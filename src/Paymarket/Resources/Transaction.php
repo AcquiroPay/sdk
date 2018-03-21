@@ -57,11 +57,11 @@ class Transaction extends AbstractResource
 
     public function hasInvoice(): bool
     {
-        return (bool)$this->invoice;
+        return (bool) $this->invoice;
     }
 
     public function hasTransfer(): bool
     {
-        return (bool)$this->transfer;
+        return (bool) $this->transfer;
     }
 }

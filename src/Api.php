@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace AcquiroPay;
 
-use AcquiroPay\Exceptions\ForbiddenException;
-use AcquiroPay\Exceptions\NotFoundException;
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
 use GuzzleHttp\Exception\ClientException;
+use AcquiroPay\Exceptions\NotFoundException;
+use AcquiroPay\Exceptions\ForbiddenException;
 use AcquiroPay\Exceptions\UnauthorizedException;
 
 class Api
@@ -54,23 +53,56 @@ class Api
         return $this;
     }
 
+    /**
+     * @param string $service
+     * @param string $method
+     * @param string $endpoint
+     * @param array|null $parameters
+     *
+     * @return mixed|string
+     *
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
     public function callService(string $service, string $method, string $endpoint, array $parameters = null)
     {
-        return $this->call($method, '/services/' . $service, ['Endpoint' => $endpoint], $parameters);
+        return $this->call($method, '/services/'.$service, ['Endpoint' => $endpoint], $parameters);
     }
 
+    /**
+     * @param string $method
+     * @param string $endpoint
+     * @param array $headers
+     * @param array|null $parameters
+     *
+     * @return mixed|string
+     *
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
     public function call(string $method, string $endpoint, array $headers = [], array $parameters = null)
     {
         $stream = $this->makeCallRequest($method, $endpoint, $headers, $parameters);
-        $json = json_decode((string)$stream);
+        $json = json_decode((string) $stream);
 
         if (json_last_error() === JSON_ERROR_NONE) {
             return $json;
         }
 
-        return (string)$stream;
+        return (string) $stream;
     }
 
+    /**
+     * @param string $method
+     * @param string $endpoint
+     * @param array $headers
+     * @param array|null $parameters
+     * @param bool $retry
+     * @return StreamInterface
+
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
     protected function makeCallRequest(
         string $method,
         string $endpoint,
@@ -81,11 +113,11 @@ class Api
         $headers = array_merge([
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->token(),
+            'Authorization' => 'Bearer '.$this->token(),
         ], $headers);
 
         if (!Str::startsWith($endpoint, ['http://', 'https://'])) {
-            $endpoint = $this->url . '/' . ltrim($endpoint, '/');
+            $endpoint = $this->url.'/'.ltrim($endpoint, '/');
         }
 
         $body = $parameters !== null ? json_encode($parameters) : null;
@@ -137,13 +169,13 @@ class Api
         try {
             $headers = ['Content-Type' => 'application/json'];
 
-            $url = $this->url . '/authorize';
+            $url = $this->url.'/authorize';
 
             $body = json_encode(compact('token', 'service', 'method', 'endpoint'));
 
             $response = $this->http->send(new Request('POST', $url, $headers, $body));
 
-            $json = \GuzzleHttp\json_decode((string)$response->getBody());
+            $json = \GuzzleHttp\json_decode((string) $response->getBody());
 
             if (!isset($json->authorized, $json->consumer_id) || $json->authorized !== true) {
                 throw new UnauthorizedException;
@@ -161,11 +193,13 @@ class Api
 
     protected function token(): ?string
     {
-        return $this->cache->remember('acquiropay_api_token_' . md5($this->url), 10, function () {
-            $response = $this->http->post($this->url . '/login',
-                ['form_params' => ['username' => $this->username, 'password' => $this->password]]);
+        return $this->cache->remember('acquiropay_api_token_'.md5($this->url), 10, function () {
+            $response = $this->http->post(
+                $this->url.'/login',
+                ['form_params' => ['username' => $this->username, 'password' => $this->password]]
+            );
 
-            return (string)$response->getBody();
+            return (string) $response->getBody();
         });
     }
 }

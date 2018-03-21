@@ -35,5 +35,4 @@ class ServiceParameter extends AbstractResource
 
     /** @var string */
     public $updatedAt;
-
 }

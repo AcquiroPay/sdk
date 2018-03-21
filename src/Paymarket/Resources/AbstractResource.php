@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Paymarket\Resources;
 
-
 class AbstractResource
 {
     /** @var array */
@@ -23,13 +22,10 @@ class AbstractResource
     protected function fill(array $attributes): void
     {
         foreach ($attributes as $key => $value) {
-
-            $key = $this->camelCase((string)$key);
+            $key = $this->camelCase((string) $key);
 
             $this->{$key} = $value;
-
         }
-
     }
 
     protected function camelCase(string $key): string

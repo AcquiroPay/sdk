@@ -19,7 +19,7 @@ trait ManagesServices
     public function getService(int $id): Service
     {
         return new Service(
-            array_get($this->get('services/' . $id), 'data', [])
+            array_get($this->get('services/'.$id), 'data', [])
         );
     }
 }

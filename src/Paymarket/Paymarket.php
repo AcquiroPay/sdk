@@ -30,5 +30,4 @@ class Paymarket
             return new $class($attributes, $this);
         }, $collection);
     }
-
 }
