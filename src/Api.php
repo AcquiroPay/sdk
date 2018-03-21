@@ -99,7 +99,7 @@ class Api
      * @param array|null $parameters
      * @param bool $retry
      * @return StreamInterface
-
+     *
      * @throws ForbiddenException
      * @throws NotFoundException
      */
