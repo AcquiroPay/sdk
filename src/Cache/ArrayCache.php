@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Cache;
 
-use AcquiroPay\Contracts\Cache;
 use Closure;
+use AcquiroPay\Contracts\Cache;
 
 class ArrayCache implements Cache
 {
@@ -13,7 +13,7 @@ class ArrayCache implements Cache
 
     public function remember(string $key, int $minutes, Closure $callback)
     {
-        if(isset($this->items[$key])) {
+        if (isset($this->items[$key])) {
             return $this->items[$key];
         }
 

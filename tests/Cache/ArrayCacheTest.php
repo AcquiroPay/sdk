@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Cache;
 
-use AcquiroPay\Cache\ArrayCache;
 use PHPUnit\Framework\TestCase;
+use AcquiroPay\Cache\ArrayCache;
 
 class ArrayCacheTest extends TestCase
 {
@@ -13,13 +13,13 @@ class ArrayCacheTest extends TestCase
     {
         $cache = new ArrayCache;
 
-        $result = $cache->remember('foo', 0, function() {
+        $result = $cache->remember('foo', 0, function () {
             return random_int(1, 100);
         });
 
         $this->assertInternalType('integer', $result);
 
-        $newResult = $cache->remember('foo', 0, function() {
+        $newResult = $cache->remember('foo', 0, function () {
             return 'bar';
         });
 

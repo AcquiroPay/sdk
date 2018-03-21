@@ -10,9 +10,10 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
+use Psr\Http\Message\StreamInterface;
+use GuzzleHttp\Exception\ClientException;
 use AcquiroPay\Exceptions\UnauthorizedException;
 
 class Api
@@ -32,21 +33,21 @@ class Api
         $this->logger = $logger;
     }
 
-    public function setUrl(string $url): Api
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function setUsername(string $username): Api
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    public function setPassword(string $password): Api
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -74,7 +75,8 @@ class Api
         string $method,
         string $endpoint,
         array $headers = [],
-        array $parameters = null
+        array $parameters = null,
+        bool $retry = true
     ): StreamInterface {
         $headers = array_merge([
             'Accept' => 'application/json',
@@ -90,8 +92,20 @@ class Api
 
         try {
             $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
+
+            return $response->getBody();
         } catch (ClientException $exception) {
+            if ($this->logger) {
+                $this->logger->error($exception);
+            }
+
             $response = $exception->getResponse();
+
+            if ($retry && $response && $response->getStatusCode() === 401) {
+                $this->token();
+
+                return $this->makeCallRequest($method, $endpoint, $headers, $parameters, false);
+            }
 
             switch ($response->getStatusCode()) {
                 case 404:
@@ -102,9 +116,8 @@ class Api
                     break;
             }
 
+            throw $exception;
         }
-
-        return $response->getBody();
     }
 
     /**
