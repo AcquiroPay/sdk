@@ -11,6 +11,8 @@ use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
 use GuzzleHttp\Exception\ClientException;
+use AcquiroPay\Exceptions\NotFoundException;
+use AcquiroPay\Exceptions\ForbiddenException;
 use AcquiroPay\Exceptions\UnauthorizedException;
 
 class Api
@@ -51,11 +53,33 @@ class Api
         return $this;
     }
 
+    /**
+     * @param string $service
+     * @param string $method
+     * @param string $endpoint
+     * @param array|null $parameters
+     *
+     * @return mixed|string
+     *
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
     public function callService(string $service, string $method, string $endpoint, array $parameters = null)
     {
         return $this->call($method, '/services/'.$service, ['Endpoint' => $endpoint], $parameters);
     }
 
+    /**
+     * @param string $method
+     * @param string $endpoint
+     * @param array $headers
+     * @param array|null $parameters
+     *
+     * @return mixed|string
+     *
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
     public function call(string $method, string $endpoint, array $headers = [], array $parameters = null)
     {
         $stream = $this->makeCallRequest($method, $endpoint, $headers, $parameters);
@@ -68,6 +92,17 @@ class Api
         return (string) $stream;
     }
 
+    /**
+     * @param string $method
+     * @param string $endpoint
+     * @param array $headers
+     * @param array|null $parameters
+     * @param bool $retry
+     * @return StreamInterface
+     *
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
     protected function makeCallRequest(
         string $method,
         string $endpoint,
@@ -102,6 +137,15 @@ class Api
                 $this->token();
 
                 return $this->makeCallRequest($method, $endpoint, $headers, $parameters, false);
+            }
+
+            switch ($response->getStatusCode()) {
+                case 404:
+                    throw new NotFoundException($response->getBody()->getContents());
+                    break;
+                case 403:
+                    throw new ForbiddenException;
+                    break;
             }
 
             throw $exception;
@@ -150,7 +194,10 @@ class Api
     protected function token(): ?string
     {
         return $this->cache->remember('acquiropay_api_token_'.md5($this->url), 10, function () {
-            $response = $this->http->post($this->url.'/login', ['form_params' => ['username' => $this->username, 'password' => $this->password]]);
+            $response = $this->http->post(
+                $this->url.'/login',
+                ['form_params' => ['username' => $this->username, 'password' => $this->password]]
+            );
 
             return (string) $response->getBody();
         });
