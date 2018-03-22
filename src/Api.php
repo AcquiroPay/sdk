@@ -6,8 +6,8 @@ namespace AcquiroPay;
 
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Str;
+use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
