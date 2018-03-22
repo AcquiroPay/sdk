@@ -17,6 +17,8 @@ trait MakesHttpRequests
      * @param string $uri
      * @param array $parameters
      * @return array
+     * @throws Exceptions\ForbiddenException
+     * @throws Exceptions\NotFoundException
      */
     public function callService(string $method, string $uri, array $parameters = null): array
     {
@@ -35,6 +37,8 @@ trait MakesHttpRequests
      *
      * @param array|null $parameters
      * @return mixed
+     * @throws Exceptions\ForbiddenException
+     * @throws Exceptions\NotFoundException
      */
     protected function get(string $uri, array $parameters = null): array
     {
@@ -45,6 +49,8 @@ trait MakesHttpRequests
      * @param string $uri
      * @param array|null $parameters
      * @return mixed
+     * @throws Exceptions\ForbiddenException
+     * @throws Exceptions\NotFoundException
      */
     protected function post(string $uri, array $parameters = null): array
     {
@@ -55,6 +61,8 @@ trait MakesHttpRequests
      * @param string $uri
      * @param array|null $parameters
      * @return mixed
+     * @throws Exceptions\ForbiddenException
+     * @throws Exceptions\NotFoundException
      */
     protected function put(string $uri, array $parameters = null): array
     {
@@ -65,6 +73,8 @@ trait MakesHttpRequests
      * @param string $uri
      * @param array|null $parameters
      * @return mixed
+     * @throws Exceptions\ForbiddenException
+     * @throws Exceptions\NotFoundException
      */
     protected function delete(string $uri, array $parameters = null): array
     {
