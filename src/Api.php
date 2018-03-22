@@ -7,6 +7,7 @@ namespace AcquiroPay;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
@@ -110,22 +111,27 @@ class Api
         array $parameters = null,
         bool $retry = true
     ): StreamInterface {
-        $headers = array_merge([
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->token(),
-        ], $headers);
-
+        $method = Str::upper($method);
         if (!Str::startsWith($endpoint, ['http://', 'https://'])) {
             $endpoint = $this->url.'/'.ltrim($endpoint, '/');
         }
 
-        $body = $parameters !== null ? json_encode($parameters) : null;
-
         try {
-            $response = $this->http->send(new Request($method, $endpoint, $headers, $body));
+            $options = [
+                'headers' => array_merge([
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer '.$this->token(),
+                ], $headers),
+            ];
 
-            return $response->getBody();
+            if ($method === 'GET') {
+                $options['query'] = $parameters;
+            } else {
+                $options['json'] = $parameters;
+            }
+
+            return $this->http->request($method, $endpoint, $options)->getBody();
         } catch (ClientException $exception) {
             if ($this->logger) {
                 $this->logger->error($exception);
