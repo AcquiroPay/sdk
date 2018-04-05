@@ -6,28 +6,28 @@ namespace AcquiroPay\Paymarket\Resources;
 
 class Service extends AbstractResource
 {
-    /** @var  int */
+    /** @var int */
     public $id;
 
-    /** @var  string */
+    /** @var string */
     public $name;
 
-    /** @var  int */
+    /** @var int */
     public $minAmount;
 
-    /** @var  int */
+    /** @var int */
     public $maxAmount;
 
     /** @var ServiceParameter[] */
     public $parameters;
 
-    /** @var  string */
+    /** @var string */
     public $className;
 
-    /** @var  bool */
+    /** @var bool */
     public $isActive;
 
-    /** @var  bool */
+    /** @var bool */
     public $isActiveForMerchant;
 
     /** @var string */
@@ -40,11 +40,10 @@ class Service extends AbstractResource
     {
         parent::__construct($attributes);
 
-        $this->isActiveForMerchant = (bool)array_get($attributes, 'pivot.is_active');
+        $this->isActiveForMerchant = (bool) array_get($attributes, 'pivot.is_active');
 
         $this->parameters = array_map(function (array $parameterAttributes) {
             return new ServiceParameter($parameterAttributes);
         }, $attributes['parameters'] ?? []);
     }
-
 }
