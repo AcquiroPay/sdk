@@ -15,9 +15,6 @@ class Paymarket
         ManagesServices,
         ManagesTransactions;
 
-    /** @var \GuzzleHttp\Client */
-    public $client;
-
     public function __construct(Api $api)
     {
         $this->api = $api;

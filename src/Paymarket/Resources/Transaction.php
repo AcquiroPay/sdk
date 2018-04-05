@@ -33,7 +33,7 @@ class Transaction extends AbstractResource
     /** @var array|null */
     public $transfer;
 
-    /** @var int */ // todo change to bool?
+    /** @var int */
     public $status;
 
     /** @var string */
@@ -51,8 +51,6 @@ class Transaction extends AbstractResource
 
         $this->invoice = $attributes['invoice'] ? new Invoice($attributes['invoice']) : null;
         $this->transfer = $attributes['transfer'] ? new Transfer($attributes['transfer']) : null;
-
-        // todo class for TransactionParameters or leave array
     }
 
     public function hasInvoice(): bool
