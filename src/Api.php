@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace AcquiroPay;
 
-use AcquiroPay\Exceptions\BaseException;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
+use AcquiroPay\Exceptions\BaseException;
 use GuzzleHttp\Exception\ClientException;
 use AcquiroPay\Exceptions\NotFoundException;
 use AcquiroPay\Exceptions\ForbiddenException;
@@ -144,7 +144,7 @@ class Api
 
             switch ($response->getStatusCode()) {
                 case 404:
-                    throw new NotFoundException((string)$response->getBody());
+                    throw new NotFoundException((string) $response->getBody());
                 case 403:
                     throw new ForbiddenException;
                 default:
