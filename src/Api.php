@@ -6,12 +6,13 @@ namespace AcquiroPay;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
 use AcquiroPay\Exceptions\BaseException;
-use GuzzleHttp\Exception\ClientException;
 use AcquiroPay\Exceptions\NotFoundException;
 use AcquiroPay\Exceptions\ForbiddenException;
 use AcquiroPay\Exceptions\UnauthorizedException;
@@ -62,6 +63,7 @@ class Api
      *
      * @throws ForbiddenException
      * @throws NotFoundException
+     * @throws BaseException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function callService(string $service, string $method, string $endpoint, array $parameters = null)
@@ -79,6 +81,7 @@ class Api
      *
      * @throws ForbiddenException
      * @throws NotFoundException
+     * @throws BaseException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function call(string $method, string $endpoint, array $headers = [], array $parameters = null)
@@ -99,11 +102,13 @@ class Api
      * @param array $headers
      * @param array|null $parameters
      * @param bool $retry
+     *
      * @return StreamInterface
      *
      * @throws ForbiddenException
      * @throws NotFoundException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws BaseException
+     * @throws GuzzleException
      */
     protected function makeCallRequest(
         string $method,
@@ -133,7 +138,7 @@ class Api
             }
 
             return $this->http->request($method, $endpoint, $options)->getBody();
-        } catch (ClientException $exception) {
+        } catch (RequestException $exception) {
             $response = $exception->getResponse();
 
             if ($retry && $response && $response->getStatusCode() === 401) {

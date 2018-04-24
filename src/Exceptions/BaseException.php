@@ -6,6 +6,7 @@ namespace AcquiroPay\Exceptions;
 
 use Exception;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ResponseInterface;
 
 class BaseException extends Exception
 {
@@ -16,5 +17,15 @@ class BaseException extends Exception
             $exception->getCode(),
             $exception
         );
+    }
+
+    public function getResponse(): ?ResponseInterface
+    {
+        $previous = $this->getPrevious();
+        if ($previous instanceof RequestException) {
+            return $previous->getResponse();
+        }
+
+        return null;
     }
 }
