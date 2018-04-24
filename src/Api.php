@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AcquiroPay;
 
+use AcquiroPay\Exceptions\BaseException;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
-use Psr\Log\LoggerInterface;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
 use GuzzleHttp\Exception\ClientException;
@@ -20,17 +20,15 @@ class Api
 {
     protected $cache;
     protected $http;
-    protected $logger;
 
     protected $url;
     protected $username;
     protected $password;
 
-    public function __construct(Cache $cache, Client $http, LoggerInterface $logger = null)
+    public function __construct(Cache $cache, Client $http)
     {
         $this->cache = $cache;
         $this->http = $http;
-        $this->logger = $logger;
     }
 
     public function setUrl(string $url): self
@@ -136,10 +134,6 @@ class Api
 
             return $this->http->request($method, $endpoint, $options)->getBody();
         } catch (ClientException $exception) {
-            if ($this->logger && $exception->getCode() !== 422) {
-                $this->logger->error($exception);
-            }
-
             $response = $exception->getResponse();
 
             if ($retry && $response && $response->getStatusCode() === 401) {
@@ -150,14 +144,12 @@ class Api
 
             switch ($response->getStatusCode()) {
                 case 404:
-                    throw new NotFoundException($response->getBody()->getContents());
-                    break;
+                    throw new NotFoundException((string)$response->getBody());
                 case 403:
                     throw new ForbiddenException;
-                    break;
+                default:
+                    throw BaseException::fromGuzzle($exception);
             }
-
-            throw $exception;
         }
     }
 
@@ -193,10 +185,6 @@ class Api
 
             return Consumer::create($json->consumer_id);
         } catch (Exception $exception) {
-            if ($this->logger) {
-                $this->logger->error($exception);
-            }
-
             throw new UnauthorizedException('', 0, $exception);
         }
     }
