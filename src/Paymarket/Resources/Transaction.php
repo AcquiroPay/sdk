@@ -27,10 +27,10 @@ class Transaction extends AbstractResource
     /** @var array */
     public $parameters;
 
-    /** @var array|null */
+    /** @var Invoice|null */
     public $invoice;
 
-    /** @var array|null */
+    /** @var Transfer|null */
     public $transfer;
 
     /** @var int */
