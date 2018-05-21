@@ -110,7 +110,7 @@ class Api
      * @throws BaseException
      * @throws GuzzleException
      */
-    protected function makeCallRequest(
+    public function makeCallRequest(
         string $method,
         string $endpoint,
         array $headers = [],
