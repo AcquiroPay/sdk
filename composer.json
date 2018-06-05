@@ -3,7 +3,7 @@
   "type": "library",
   "license": "MIT",
   "require": {
-    "php": ">=7.1",
+    "php": "^7.1",
     "guzzlehttp/guzzle": "^6.2",
     "tightenco/collect": "5.*"
   },
@@ -11,7 +11,7 @@
     "fzaninotto/faker": "^1.6",
     "illuminate/cache": "^5.5",
     "larapack/dd": "^1.1",
-    "mockery/mockery": "~1.0",
+    "mockery/mockery": "^1.0",
     "phpunit/phpunit": "^6.0"
   },
   "autoload": {

@@ -185,12 +185,12 @@ class Api
             $json = \GuzzleHttp\json_decode((string) $response->getBody());
 
             if (!isset($json->authorized, $json->consumer_id) || $json->authorized !== true) {
-                throw new UnauthorizedException;
+                throw new UnauthorizedException('Consumer is not authorized for this request.');
             }
 
             return Consumer::create($json->consumer_id);
         } catch (Exception $exception) {
-            throw new UnauthorizedException('', 0, $exception);
+            throw new UnauthorizedException('Something went wrong.', 0, $exception);
         }
     }
 
