@@ -23,7 +23,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->paymentId;
     }
 
-    public function setPaymentId(string $paymentId): PaymentStatusByCfResponse
+    public function setPaymentId(string $paymentId): self
     {
         $this->paymentId = $paymentId;
 
@@ -35,7 +35,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->status;
     }
 
-    public function setStatus(string $status): PaymentStatusByCfResponse
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -47,7 +47,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->extendedId;
     }
 
-    public function setExtendedId(string $extendedId): PaymentStatusByCfResponse
+    public function setExtendedId(string $extendedId): self
     {
         $this->extendedId = $extendedId;
 
@@ -59,7 +59,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->extendedStatus;
     }
 
-    public function setExtendedStatus(string $extendedStatus): PaymentStatusByCfResponse
+    public function setExtendedStatus(string $extendedStatus): self
     {
         $this->extendedStatus = $extendedStatus;
 
@@ -71,7 +71,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->transactionStatus;
     }
 
-    public function setTransactionStatus(string $transactionStatus): PaymentStatusByCfResponse
+    public function setTransactionStatus(string $transactionStatus): self
     {
         $this->transactionStatus = $transactionStatus;
 
@@ -83,7 +83,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->datetime;
     }
 
-    public function setDatetime(string $datetime): PaymentStatusByCfResponse
+    public function setDatetime(string $datetime): self
     {
         $this->datetime = Carbon::parse($datetime);
 
@@ -95,7 +95,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->duplicate;
     }
 
-    public function setDuplicate(string $duplicate): PaymentStatusByCfResponse
+    public function setDuplicate(string $duplicate): self
     {
         $this->duplicate = $duplicate === 'true';
 
@@ -107,7 +107,7 @@ class PaymentStatusByCfResponse implements Arrayable
         return $this->additional;
     }
 
-    public function setAdditional(array $additional): PaymentStatusByCfResponse
+    public function setAdditional(array $additional): self
     {
         $this->additional = $additional;
 

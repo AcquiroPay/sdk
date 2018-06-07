@@ -6,13 +6,13 @@ namespace AcquiroPay;
 
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Request;
 use AcquiroPay\Contracts\Cache;
 use Psr\Http\Message\StreamInterface;
 use AcquiroPay\Exceptions\BaseException;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use AcquiroPay\Exceptions\NotFoundException;
 use AcquiroPay\Exceptions\ForbiddenException;
 use AcquiroPay\Exceptions\UnauthorizedException;
