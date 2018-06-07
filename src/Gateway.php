@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace AcquiroPay;
 
-use AcquiroPay\Gateway\Responses\InitResponse;
-use AcquiroPay\Gateway\Responses\PaymentStatusByCfResponse;
-use DOMDocument;
 use DOMElement;
+use DOMDocument;
 use GuzzleHttp\Client as Http;
 use Illuminate\Support\Collection;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use AcquiroPay\Gateway\Responses\InitResponse;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use AcquiroPay\Gateway\Responses\PaymentStatusByCfResponse;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 class Gateway
 {
@@ -33,33 +33,32 @@ class Gateway
         int $merchantId = null,
         string $secretWord = null,
         bool $live = false
-    )
-    {
+    ) {
         $this->http = $http;
     }
 
-    public function setUrl(string $url): Gateway
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function setMerchantId(int $merchantId): Gateway
+    public function setMerchantId(int $merchantId): self
     {
         $this->merchantId = $merchantId;
 
         return $this;
     }
 
-    public function setSecretWord(string $secretWord): Gateway
+    public function setSecretWord(string $secretWord): self
     {
         $this->secretWord = $secretWord;
 
         return $this;
     }
 
-    public function setLive(bool $live): Gateway
+    public function setLive(bool $live): self
     {
         $this->url = $live ? self::LIVE_URL : self::TEST_URL;
 
@@ -91,8 +90,7 @@ class Gateway
         string $cf,
         float $amount,
         array $parameters = []
-    ): InitResponse
-    {
+    ): InitResponse {
         $amount = $this->formatAmount($amount);
 
         $parameters = array_merge($parameters, [
@@ -106,12 +104,12 @@ class Gateway
             'exp_year' => $expiryYear,
             'cardholder' => $cardHolder,
             'token' => md5(
-                $this->merchantId .
-                $productId .
-                $amount .
-                $cf .
-                array_get($parameters, 'cf2') .
-                array_get($parameters, 'cf3') .
+                $this->merchantId.
+                $productId.
+                $amount.
+                $cf.
+                array_get($parameters, 'cf2').
+                array_get($parameters, 'cf3').
                 $this->secretWord
             ),
         ]);
@@ -135,7 +133,7 @@ class Gateway
             'opcode' => 2,
             'product_id' => $productId,
             'cf' => $cf,
-            'token' => md5($this->merchantId . $productId . $cf . $this->secretWord),
+            'token' => md5($this->merchantId.$productId.$cf.$this->secretWord),
         ];
 
         $response = $this->send($parameters);
@@ -171,7 +169,7 @@ class Gateway
 
         $response = $this->http->post($this->url, ['form_params' => $parameters, 'verify' => false]);
 
-        return (string)$response->getBody();
+        return (string) $response->getBody();
     }
 
     private function deserialize(string $data, string $class)

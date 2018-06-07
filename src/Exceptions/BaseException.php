@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace AcquiroPay\Exceptions;
 
 use Exception;
-use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\RequestException;
 
 class BaseException extends Exception
 {
