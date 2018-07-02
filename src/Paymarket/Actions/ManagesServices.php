@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AcquiroPay\Paymarket\Actions;
 
 use AcquiroPay\Paymarket\Resources\Service;
+use AcquiroPay\Paymarket\Resources\ServiceRate;
 
 trait ManagesServices
 {
@@ -16,10 +17,17 @@ trait ManagesServices
         );
     }
 
-    public function getService(int $id): Service
+    public function getService(int $serviceId): Service
     {
         return new Service(
-            array_get($this->get('services/'.$id), 'data', [])
+            array_get($this->get('services/' . $serviceId), 'data', [])
+        );
+    }
+
+    public function getServiceRate(int $serviceId): ServiceRate
+    {
+        return new ServiceRate(
+            array_get($this->get('services/' . $serviceId . '/rate'), 'data', [])
         );
     }
 }
