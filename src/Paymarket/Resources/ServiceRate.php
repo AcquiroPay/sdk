@@ -26,5 +26,4 @@ class ServiceRate extends AbstractResource
 
     /** @var string */
     public $updated_at;
-
 }
