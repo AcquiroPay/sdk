@@ -20,14 +20,14 @@ trait ManagesServices
     public function getService(int $serviceId): Service
     {
         return new Service(
-            array_get($this->get('services/' . $serviceId), 'data', [])
+            array_get($this->get('services/'.$serviceId), 'data', [])
         );
     }
 
     public function getServiceRate(int $serviceId): ServiceRate
     {
         return new ServiceRate(
-            array_get($this->get('services/' . $serviceId . '/rate'), 'data', [])
+            array_get($this->get('services/'.$serviceId.'/rate'), 'data', [])
         );
     }
 }
