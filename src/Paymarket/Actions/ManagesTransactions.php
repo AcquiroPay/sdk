@@ -16,6 +16,11 @@ trait ManagesTransactions
         );
     }
 
+    public function getTransactionOptions(array $parameters): array
+    {
+        return $this->post('transactions/options', $parameters);
+    }
+
     public function getTransaction(string $uuid): Transaction
     {
         return new Transaction(
