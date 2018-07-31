@@ -59,16 +59,19 @@ class Api
      * @param string $endpoint
      * @param array|null $parameters
      *
+     * @param array $headers
      * @return mixed|string
      *
-     * @throws ForbiddenException
-     * @throws NotFoundException
      * @throws BaseException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws ForbiddenException
+     * @throws GuzzleException
+     * @throws NotFoundException
      */
-    public function callService(string $service, string $method, string $endpoint, array $parameters = null)
+    public function callService(string $service, string $method, string $endpoint, array $parameters = null, array $headers = [])
     {
-        return $this->call($method, '/services/'.$service, ['Endpoint' => $endpoint], $parameters);
+        $headers = array_merge(['Endpoint' => $endpoint], $headers);
+
+        return $this->call($method, '/services/'.$service, $headers, $parameters);
     }
 
     /**
