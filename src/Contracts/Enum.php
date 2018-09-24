@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AcquiroPay\Helpers;
+namespace AcquiroPay\Contracts;
 
 use AcquiroPay\Helpers\Constants\Language;
 use Illuminate\Support\Collection;
 
-abstract class AbstractConstant
+abstract class Enum
 {
     protected const LABELS = [];
     protected const TRANSLATIONS = [];

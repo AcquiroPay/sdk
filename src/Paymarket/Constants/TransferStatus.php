@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Paymarket\Constants;
 
-use AcquiroPay\Helpers\AbstractConstant;
+use AcquiroPay\Contracts\Enum;
 
-class TransferStatus extends AbstractConstant
+class TransferStatus extends Enum
 {
     public const CREATED = 1;
     public const PROCESSING = 2;

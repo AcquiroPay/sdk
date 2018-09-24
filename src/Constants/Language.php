@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Helpers\Constants;
 
-use AcquiroPay\Helpers\AbstractConstant;
+use AcquiroPay\Contracts\Enum;
 
-class Language extends AbstractConstant
+class Language extends Enum
 {
     public const RUSSIAN = 'ru';
     public const ENGLISH = 'en';
