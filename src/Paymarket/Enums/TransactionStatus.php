@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Paymarket\Enums;
 
-
 use AcquiroPay\Contracts\Enum;
 
 class TransactionStatus extends Enum
