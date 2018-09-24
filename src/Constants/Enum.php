@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace AcquiroPay\Contracts;
+namespace AcquiroPay\Constants;
 
-use AcquiroPay\Constants\Language;
 use Illuminate\Support\Collection;
 
 abstract class Enum

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Paymarket\Constants;
 
-use AcquiroPay\Contracts\Enum;
+use AcquiroPay\Constants\Enum;
 
 class TransferStatus extends Enum
 {
