@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AcquiroPay\Constants;
+namespace AcquiroPay\Contracts;
 
 use Illuminate\Support\Collection;
 

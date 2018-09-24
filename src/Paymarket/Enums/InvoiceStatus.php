@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AcquiroPay\Paymarket\Constants;
+namespace AcquiroPay\Paymarket\Enums;
 
-use AcquiroPay\Constants\Enum;
+use AcquiroPay\Contracts\Enum;
 
-class TransferStatus extends Enum
+class InvoiceStatus extends Enum
 {
     public const CREATED = 1;
     public const PROCESSING = 2;
@@ -14,6 +14,7 @@ class TransferStatus extends Enum
     public const DECLINED = 4;
     public const CANCELED = 5;
     public const ERROR = 6;
+    public const REFUNDED = 7;
 
     protected const LABELS = [
         self::CREATED => 'Создан',
@@ -22,5 +23,6 @@ class TransferStatus extends Enum
         self::DECLINED => 'Отклонен',
         self::CANCELED => 'Отменен',
         self::ERROR => 'Ошибка',
+        self::REFUNDED => 'Возврат',
     ];
 }

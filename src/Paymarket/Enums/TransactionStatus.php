@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AcquiroPay\Paymarket\Constants;
+namespace AcquiroPay\Paymarket\Enums;
 
 
-use AcquiroPay\Constants\Enum;
+use AcquiroPay\Contracts\Enum;
 
 class TransactionStatus extends Enum
 {
