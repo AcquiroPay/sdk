@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Contracts;
 
-use AcquiroPay\Helpers\Constants\Language;
+use AcquiroPay\Constants\Language;
 use Illuminate\Support\Collection;
 
 abstract class Enum
