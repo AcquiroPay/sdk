@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AcquiroPay\Constants;
+namespace AcquiroPay\Enums;
 
 use AcquiroPay\Contracts\Enum;
 
