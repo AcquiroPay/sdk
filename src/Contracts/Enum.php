@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AcquiroPay\Contracts;
 
+use AcquiroPay\Enums\Language;
 use Illuminate\Support\Collection;
 
 abstract class Enum
@@ -45,4 +46,5 @@ abstract class Enum
     {
         return static::translations()->get($language);
     }
+
 }

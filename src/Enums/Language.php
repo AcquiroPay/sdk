@@ -15,4 +15,5 @@ class Language extends Enum
         self::RUSSIAN => 'Русский',
         self::ENGLISH => 'English',
     ];
+
 }
