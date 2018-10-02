@@ -34,7 +34,7 @@ abstract class Enum
 
     public static function getKey(string $label): int
     {
-        return (int)array_search($label, static::LABELS, true);
+        return (int) array_search($label, static::LABELS, true);
     }
 
     public static function translations(): Collection
@@ -46,5 +46,4 @@ abstract class Enum
     {
         return static::translations()->get($language);
     }
-
 }
