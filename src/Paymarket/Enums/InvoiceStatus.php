@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AcquiroPay\Paymarket\Enums;
 
 use AcquiroPay\Contracts\Enum;
+use AcquiroPay\Enums\Language;
 
 class InvoiceStatus extends Enum
 {
@@ -24,5 +25,18 @@ class InvoiceStatus extends Enum
         self::CANCELED => 'Отменен',
         self::ERROR => 'Ошибка',
         self::REFUNDED => 'Возврат',
+    ];
+
+    protected const TRANSLATIONS = [
+        Language::RUSSIAN => self::LABELS,
+        Language::ENGLISH => [
+            self::CREATED => 'Created',
+            self::PROCESSING => 'Processing',
+            self::COMPLETED => 'Completed',
+            self::DECLINED => 'Declined',
+            self::CANCELED => 'Canceled',
+            self::ERROR => 'Error',
+            self::REFUNDED => 'Refunded',
+        ],
     ];
 }
