@@ -6,9 +6,9 @@
     "php": "^7.1",
     "ext-json": "*",
     "guzzlehttp/guzzle": "^6.2",
+    "illuminate/support": "5.*",
     "symfony/property-access": "^4.1",
-    "symfony/serializer": "^4.1",
-    "tightenco/collect": "5.*"
+    "symfony/serializer": "^4.1"
   },
   "require-dev": {
     "fzaninotto/faker": "^1.6",
