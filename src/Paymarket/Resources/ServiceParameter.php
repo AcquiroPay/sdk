@@ -30,6 +30,9 @@ class ServiceParameter extends AbstractResource
     /** @var string */
     public $type;
 
+    /** @var array */
+    public $meta;
+
     /** @var string */
     public $createdAt;
 
